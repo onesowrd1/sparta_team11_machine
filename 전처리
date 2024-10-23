@@ -1,0 +1,13 @@
+titanic['age'] = titanic['age'].fillna(titanic['age'].median())
+titanic['embarked'] = titanic['embarked'].fillna(titanic['embarked'].mode()[0])
+
+print(titanic['age'].isnull().sum())
+print(titanic['embarked'].isnull().sum())
+
+titanic['sex'] = titanic['sex'].map({'male': 0, 'female': 1})
+titanic['alive'] = titanic['alive'].map({'no': 1, 'yes': 0})
+titanic['embarked'] = titanic['embarked'].map({'C': 0, 'Q': 1, 'S': 2,})
+
+print(titanic['sex'].head())
+print(titanic['alive'].head())
+print(titanic['embarked'].head())
