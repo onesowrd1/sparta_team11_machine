@@ -1,26 +1,21 @@
-# 나이(age) 열의 결측값을 중앙값으로 채움
-titanic['age'].fillna(titanic['age'].median(), inplace=True)
-# 승선한 항구(embarked) 열의 결측값을 최빈값으로 채움
-titanic['embarked'].fillna(titanic['embarked'].mode()[0], inplace=True)
-# 승선 도시(embark_town) 열의 결측값을 'Unknown'으로 채움
-titanic['embark_town'].fillna('Unknown', inplace=True)
-# 'deck' 열을 object 타입으로 변환
-titanic['deck'] = titanic['deck'].astype(str)
-# 결측값을 'Unknown'으로 채움
-titanic['deck'].fillna('Unknown', inplace=True)
-#deck과 embark_town을 fillna(0)로 진행했을 때 TypeError
-#해결하기 위해 dtype으로 각 데이터 타입을 확인
-#숫자형 데이터'0'에서 문자형 데이터'Unknown'으로 대체
-#각 타입을 astype(category)과 (object)로 타입 변화 추가해도 안됨
-#이유를 찾아보니 원래 카테고리 타입인 데이터에는 새로운 카테고리 값을 추가할 때 에러가 발생
-#category 타입 경우 새로운 카테고리를 추가하기 위해선 기존 카테고리 목록에 추가 되어있어야 가능
-#또는 타입을 변환을 진행할 때 astype(object)로 작성해서 오류
-#astype(str)로 수정 하니 object타입으로 변환 가능
+# Age 열의 결측치를 중앙값으로 대체
+titanic['age'] = titanic['age'].fillna(titanic['age'].median())
 
+# Embarked 열의 결측치를 최빈값으로 대체
+titanic['embarked'] = titanic['embarked'].fillna(titanic['embarked'].mode()[0])
+
+# 결측값 처리 결과 확인
+print("Age 열의 결측값 개수:", titanic['age'].isnull().sum())
+print("Embarked 열의 결측값 개수:", titanic['embarked'].isnull().sum())
+
+# Sex(성별) 열을 남자는 0, 여자는 1로 변환
 titanic['sex'] = titanic['sex'].map({'male': 0, 'female': 1})
-titanic['alive'] = titanic['alive'].map({'no': 1, 'yes': 0})
-titanic['embarked'] = titanic['embarked'].map({'C': 0, 'Q': 1, 'S': 2,})
 
-print(titanic['sex'].head())
-print(titanic['alive'].head())
-print(titanic['embarked'].head())
+# Alive(생존 여부) 열을 yes는 1, no는 0으로 변환
+titanic['alive'] = titanic['alive'].map({'yes': 1, 'no': 0})
+
+# Embarked(승선 항구) 열을 'C'는 0, 'Q'는 1, 'S'는 2로 변환
+titanic['embarked'] = titanic['embarked'].map({'C': 0, 'Q': 1, 'S': 2})
+
+# 변환 후 데이터 확인
+print(titanic[['sex', 'alive', 'embarked']].head())
